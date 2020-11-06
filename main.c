@@ -14,11 +14,9 @@
 #define AND_SYMBOL       38  /* & */
 #define XOR_SYMBOL       94  /* ^ */
 #define OR_SYMBOL        124 /* | */
-#define MOD_SYMBOL       37  /* % */
-#define STORE_SYMBOL     33  /* ! */
 
 #define TABLE_SIZE       1250
-#define INIT_STACK_SIZE  32
+#define STACK_SIZE       32
 
 typedef struct TOKENSTR{
  uint16_t length;
@@ -76,7 +74,7 @@ void parse(TOKENSTR *tokens, uint32_t count, SYMBOL_TABLE_T *symbol_table, uint3
 int main(){
  char *test = "100 15 +";
  TOKENSTR *toks;
- uint32_t stack[32];
+ uint32_t stack[STACK_SIZE];
  uint32_t count = 0;
  SYMBOL_TABLE_T symbol_table[1250];
  toks = (TOKENSTR *) calloc(1, sizeof(TOKENSTR));
