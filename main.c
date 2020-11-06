@@ -82,12 +82,5 @@ int main(){
  toks = (TOKENSTR *) calloc(1, sizeof(TOKENSTR));
  tokenize(test, toks, &count);
  parse(toks, count, symbol_table, stack);
- /*for(uint32_t i = 0; i < count; i++){
-  for(uint32_t j = toks[i].start; j < (toks[i].start + toks[i].length); j++){
-   printf("%c", test[j]);
-  }
-  printf("\n");
-  printf("hash: %d\n", hash(test, toks[i].start, toks[i].length));
- }*/
  return 0;
 }
