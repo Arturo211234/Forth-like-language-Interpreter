@@ -24,10 +24,9 @@ typedef struct TOKENSTR{
 }TOKENSTR;
 
 typedef struct SYMBOL_TABLE_T{
- uint8_t  type; /* 0 = empty, 1 = var, 2 = function*/
- size_t start;
- uint16_t length;
- uint32_t address;
+ uint8_t   type; /* 0 = empty, 1 = var, 2 = function*/
+ size_t    start;
+ uint16_t  length;
 }SYMBOL_TABLE_T;
 
 uint32_t hash(char *string, size_t start, uint16_t length){
@@ -76,7 +75,7 @@ int main(){
  TOKENSTR *toks;
  uint32_t stack[STACK_SIZE];
  uint32_t count = 0;
- SYMBOL_TABLE_T symbol_table[1250];
+ SYMBOL_TABLE_T symbol_table[TABLE_SIZE];
  toks = (TOKENSTR *) calloc(1, sizeof(TOKENSTR));
  tokenize(test, toks, &count);
  parse(toks, count, symbol_table, stack);
