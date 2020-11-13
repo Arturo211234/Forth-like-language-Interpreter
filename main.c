@@ -24,7 +24,7 @@ typedef struct TOKENSTR{
 }TOKENSTR;
 
 typedef struct SYMBOL_TABLE_T{
- uint8_t   type; /* 0 = empty, 1 = var, 2 = function*/
+ uint8_t   isEmpty; /* 0 = empty, 1 = not empty */
  size_t    start;
  uint16_t  length;
 }SYMBOL_TABLE_T;
@@ -64,20 +64,77 @@ void tokenize(const char *input, TOKENSTR *tokens, uint32_t *count){
  *count = tokenCount;
 }
 
-void parse(TOKENSTR *tokens, uint32_t count, SYMBOL_TABLE_T *symbol_table, uint32_t *stack){
+void push(uint32_t *stack, uint8_t *stackCount, uint32_t number){
+ if(*stackCount >= (STACK_SIZE - 1)){
+  puts("\nERROR: You have pushed too many elements to the stack.\n");
+  printf("The maximum number of elements allowed is %d\n", STACK_SIZE);
+  exit(1);
+ }
+ stack[*stackCount++] = number;
+}
+
+uint32_t pop(uint32_t *stack, uint8_t *stackCount){
+ return stack[*stackCount--];
+}
+
+void parse(TOKENSTR *tokens, uint32_t count, SYMBOL_TABLE_T *symbol_table, uint32_t *stack, uint8_t stack_count, char *string){
  for(uint32_t i = 0; i < count; i++){
-  printf("Token number %d parsed\n", i);
+  if(isdigit((int) *(string + tokens[i].start))){
+   uint32_t intermediate = (uint32_t) strtol(&string[tokens[i].start], NULL, 0); // Add intermediate so compiler stops throwing errors 
+   push(stack, &stack_count, intermediate);
+  } else if(isalpha((int) *(string + tokens[i].start))){
+   // Token is function
+   // TODO:
+   // - Hash the token string
+   // - Do linear probing
+   // - ????
+
+  } else {
+   // If we reach here, it means that the token is either:
+   // an arithmetic operator
+   // a control char
+   switch(*(string + tokens[i].start)){
+    case '+':
+      // Do addition and stack popping
+      break;
+    case '-':
+      // Do subtraction and stack popping
+      break;
+    case '*':
+      // Do multiplication and stack popping
+      break;
+    case '/':
+      // Do division and stack popping
+      break;
+    case '&':
+      // Do bitwise AND and stack popping
+      break;
+    case '^':
+      // Do bitwise XOR and stack popping
+      break;
+    case '|':
+      // Do bitwise OR and stack popping
+      break;
+    default:
+      puts("Invalid character detected in code!\n");
+      break;
+   }
+  
+  }
+
  }
 }
+
 
 int main(){
  char *test = "100 15 +";
  TOKENSTR *toks;
  uint32_t stack[STACK_SIZE];
- uint32_t count = 0;
+ uint32_t token_count = 0;
+ uint8_t stack_count = 0;
  SYMBOL_TABLE_T symbol_table[TABLE_SIZE];
  toks = (TOKENSTR *) calloc(1, sizeof(TOKENSTR));
- tokenize(test, toks, &count);
- parse(toks, count, symbol_table, stack);
+ tokenize(test, toks, &token_count);
+ parse(toks, token_count, symbol_table, stack, stack_count, test);
  return 0;
 }
